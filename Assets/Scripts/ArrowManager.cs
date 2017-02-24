@@ -1,18 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ArrowManager : MonoBehaviour
 {
-    public SteamVR_TrackedObject trackedObj;
+    public SteamVR_TrackedObject TrackedObj;
     public GameObject ArrowPrefabs;
     public static ArrowManager Instance;
     public GameObject AttachPoint;
     public GameObject StartPoint;
     public GameObject StringStartPoint;
 
-    private GameObject CurrentArrow;
-    private bool isAttached = false; //判断是否被触发
+    private GameObject _currentArrow;
+    private bool _isAttached = false; //判断是否被触发
 
     void Awake()
     {
@@ -22,10 +23,10 @@ public class ArrowManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
     }
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update()
     {
         AttachArrow();
         PullString();
@@ -34,32 +35,34 @@ public class ArrowManager : MonoBehaviour
     //当弓上没有箭的时候attach
     private void AttachArrow()
     {
-        if (CurrentArrow == null)
+        if (_currentArrow == null)
         {
-            CurrentArrow = Instantiate(ArrowPrefabs); //实体化箭
-            CurrentArrow.transform.parent = trackedObj.transform;
-            CurrentArrow.transform.localPosition = new Vector3(0.0f, -0.367f, 0.096f);
-            CurrentArrow.transform.localRotation = Quaternion.Euler(new Vector3(0, -90, -70));
+            _currentArrow = Instantiate(ArrowPrefabs); //实体化箭
+            _currentArrow.transform.parent = TrackedObj.transform;
+            _currentArrow.transform.localPosition = new Vector3(0.0f, -0.367f, 0.096f);
+            _currentArrow.transform.localRotation = Quaternion.Euler(new Vector3(0, -90, -70));
         }
     }
 
     public void AttachBowToArrow()
     {
-        CurrentArrow.transform.parent = AttachPoint.transform;
-        CurrentArrow.transform.localPosition = StartPoint.transform.localPosition;
-        CurrentArrow.transform.rotation = StartPoint.transform.rotation;
-        isAttached = true; //说明被触发了
+        _currentArrow.transform.parent = AttachPoint.transform;
+        _currentArrow.transform.localPosition = StartPoint.transform.localPosition +
+                                               new Vector3(-0.47f, 0f, 0f);
+        _currentArrow.transform.rotation = StartPoint.transform.rotation;
+        _isAttached = true; //说明被触发了
     }
 
     //拉动弓弦的逻辑
     private void PullString()
     {
-        if (isAttached)
+        if (_isAttached)
         {
-            float dist = - (trackedObj.transform.position - StringStartPoint.transform.position).magnitude; //弓弦和手柄设备的距离差值
-            AttachPoint.transform.localPosition = StringStartPoint.transform.localPosition + new Vector3(1f * dist, 0f, 0f);
-
-            var device = SteamVR_Controller.Input((int)trackedObj.index);
+            float dist = -(TrackedObj.transform.position - StringStartPoint.transform.position)
+                .magnitude; //弓弦和手柄设备的距离差值
+            AttachPoint.transform.localPosition = StringStartPoint.transform.localPosition +
+                                                  new Vector3(1f * dist, 0f, 0f);
+            var device = SteamVR_Controller.Input((int) TrackedObj.index);
             if (device.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
             {
                 Fire();
@@ -70,12 +73,12 @@ public class ArrowManager : MonoBehaviour
     //射击
     private void Fire()
     {
-        CurrentArrow.transform.parent = null;
-        Rigidbody rigidbody = CurrentArrow.GetComponent<Rigidbody>();
-        rigidbody.velocity = CurrentArrow.transform.right* 20f; //设置速度
+        _currentArrow.transform.parent = null;
+        Rigidbody rigidbody = _currentArrow.GetComponent<Rigidbody>();
+        rigidbody.velocity = _currentArrow.transform.right * 20f; //设置速度
         rigidbody.useGravity = true;
         AttachPoint.transform.position = StringStartPoint.transform.position;
-        CurrentArrow = null; //发射出去以后
-        isAttached = false; //处于非触发的状态
+        _currentArrow = null; //发射出去以后
+        _isAttached = false; //处于非触发的状态
     }
 }
