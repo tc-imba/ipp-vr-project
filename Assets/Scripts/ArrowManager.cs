@@ -78,14 +78,15 @@ public class ArrowManager : MonoBehaviour
         Rigidbody rigidbody = _currentArrow.GetComponent<Rigidbody>();
         rigidbody.velocity = _currentArrow.transform.right * 20f; //设置速度
         rigidbody.maxAngularVelocity = 0;
-        rigidbody.rotation = Quaternion.Euler(Vector3.Angle(StringStartPoint.transform.position, StartPoint.transform.position));
+        //rigidbody.rotation = Quaternion.Euler(Vector3.Angle(StringStartPoint.transform.position, StartPoint.transform.position));
         //rigidbody.freezeRotation = true;
         rigidbody.useGravity = true;
         BoxCollider collider = _currentArrow.GetComponent<BoxCollider>();
-        collider.isTrigger = false;
         //Debug.Log(collider.size);
         AttachPoint.transform.position = StringStartPoint.transform.position;
         _currentArrow = null; //发射出去以后
         _isAttached = false; //处于非触发的状态
+        //new WaitForSeconds(0.3f);
+        collider.isTrigger = false;
     }
 }
