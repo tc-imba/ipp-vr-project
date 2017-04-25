@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 62fd43ceb381a3448ace0244a889d0a7
+timeCreated: 1488541304
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - Monster1: {fileID: 100008, guid: 2477ab503764ede428a4a3674d60d16f, type: 3}
+  - Monster2: {fileID: 100008, guid: 25fe6a826a6b977489506ccfc4637b8a, type: 3}
+  - Monster3: {fileID: 100002, guid: d3bd2e48a6b90bc4d8bcc2a68a395c19, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
