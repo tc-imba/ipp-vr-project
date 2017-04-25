@@ -59,6 +59,7 @@ public class ArrowManager : MonoBehaviour
     {
         if (_isAttached)
         {
+            _currentArrow.GetComponent<Arrow>().AddDamage(Time.deltaTime * 100);
             float dist = -(trackedObj.transform.position - StringStartPoint.transform.position)
                 .magnitude; //弓弦和手柄设备的距离差值
             AttachPoint.transform.localPosition = StringStartPoint.transform.localPosition +
@@ -86,7 +87,6 @@ public class ArrowManager : MonoBehaviour
         AttachPoint.transform.position = StringStartPoint.transform.position;
         _currentArrow = null; //发射出去以后
         _isAttached = false; //处于非触发的状态
-        //new WaitForSeconds(0.3f);
         collider.isTrigger = false;
     }
 }

@@ -1,11 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
+    private float _damage;
+
     void Start()
     {
+        _damage = 1f;
     }
 
     private void OnTriggerStay()
@@ -26,6 +30,7 @@ public class Arrow : MonoBehaviour
         if (monster)
         {
             monster.SetStun();
+            monster.Hurt(_damage);
         }
         //Debug.Log(other.collider.bounds);
     }
@@ -37,5 +42,11 @@ public class Arrow : MonoBehaviour
         {
             ArrowManager.Instance.AttachBowToArrow(); //扣动trigger时进行attach操作
         }
+    }
+
+    public void AddDamage(float damage)
+    {
+        _damage += damage;
+        _damage = Math.Max(125f, damage);
     }
 }

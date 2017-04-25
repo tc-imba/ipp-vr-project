@@ -22,7 +22,7 @@ public class MonsterManager : MonoBehaviour
 
     void Start()
     {
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 25; i++)
             CreateMonster();
     }
 
@@ -30,9 +30,9 @@ public class MonsterManager : MonoBehaviour
     {
     }
 
-    void CreateMonster()
+    public void CreateMonster()
     {
-        int index = UnityEngine.Random.Range(0, 2);
+        int index = UnityEngine.Random.Range(0, 3);
         GameObject monster = Instantiate(Monsters[index]);
     }
 }
